@@ -1,7 +1,14 @@
 {
-  "dependencies": {
-    "axios": "^1.15.2",
-    "react-hot-toast": "^2.6.0",
-    "react-router-dom": "^7.14.2"
-  }
+  "name": "task-manager-mern",
+  "version": "1.0.0",
+  "description": "MERN Stack Task Manager",
+  "scripts": {
+    "install-all": "cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm install && npm run build",
+    "start": "cd server && npm start",
+    "render-build": "cd client && npm install && npm run build && cd ../server && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

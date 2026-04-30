@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const path = require('path');
 require('dotenv').config();
 const connectDB = require('./config/db');
 
@@ -18,14 +19,25 @@ app.use(morgan('dev'));
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
-// Test route
-app.get('/', (req, res) => {
-  res.json({ message: 'Task Manager API is running!' });
-});
+// Serve static files from React build in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  // Any route that is not an API route -> serve React app
+  app.get('{*path}', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
+  });
+} else {
+  // Test route (only in development)
+  app.get('/', (req, res) => {
+    res.json({ message: 'Task Manager API is running!' });
+  });
+}
 
 // Connect DB and start server
+const PORT = process.env.PORT || 5000;
 connectDB().then(() => {
-  app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
   });
 });
